@@ -1,0 +1,35 @@
+# 元件版本號
+apiVersion: v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Service
+metadata:
+  # Service 名稱
+  name: blue-service
+spec:
+  selector:
+    app: blue-nginx
+  type: NodePort
+  ports:
+    - protocol: TCP
+      # ClusterIP port
+      port: 80
+      # 容器 port
+      targetPort: 3000
+---
+# 元件版本號
+apiVersion: v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Service
+metadata:
+  # Service 名稱
+  name: purple-service
+spec:
+  selector:
+    app: purple-nginx
+  type: NodePort
+  ports:
+    - protocol: TCP
+      # ClusterIP port
+      port: 80
+      # 容器 port
+      targetPort: 3000

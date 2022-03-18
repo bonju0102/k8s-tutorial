@@ -1,0 +1,19 @@
+# 元件版本號
+apiVersion: v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Service
+metadata:
+  # Service 名稱
+  name: mysql-service
+spec:
+  selector:
+    app: mysql
+  type: NodePort
+  ports:
+    - protocol: TCP
+      # ClusterIP port
+      port: 13306
+      # 容器 port
+      targetPort: 3306
+      # 指定 targetPort 要 mapping 到 Node 上哪個 port
+      nodePort: 30306

@@ -1,0 +1,94 @@
+# --------- app-deploy ---------
+# 元件版本號
+apiVersion: apps/v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Deployment
+metadata:
+  namespace: demo-app
+  # Deployment 名稱
+  name: app-deploy
+spec:
+  # 指定建立多少數量的 Pod
+  replicas: 1
+  # 定義 Pod 內容
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app-container
+          image: bonju0102/naruto:latest
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_HOST
+                  name: demo-conf
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_PORT
+                  name: demo-conf
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DB_PASSWORD
+                  name: demo-sec
+          ports:
+            - containerPort: 3000
+              name: app-port
+              protocol: TCP
+  # 指定這個 Deployment 規則要適用到哪些 Pod
+  selector:
+    matchLabels:
+      app: app
+
+---
+# --------- app-service ---------
+# 元件版本號
+apiVersion: v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Service
+metadata:
+  namespace: demo-app
+  # Service 名稱
+  name: app-svc
+spec:
+  selector:
+    app: app
+  type: NodePort
+  ports:
+    - name: app-port
+      protocol: TCP
+      # ClusterIP port
+      port: 13000
+      # 容器 port
+      targetPort: app-port
+
+---
+# --------- Secret ---------
+# 元件版本號
+apiVersion: v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Secret
+metadata:
+  namespace: demo-app
+  name: demo-sec
+type: Opaque
+data:
+  DB_PASSWORD: IVBnWnlyRSpxOUgrYWVERw==
+
+
+---
+# --------- ConfigMap ---------
+# 元件版本號
+apiVersion: v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: ConfigMap
+metadata:
+  namespace: demo-app
+  name: demo-conf
+data:
+  DB_HOST: 'db-svc'
+  DB_PORT: 'db-port'

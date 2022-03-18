@@ -1,0 +1,19 @@
+# 元件版本號
+apiVersion: v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Pod
+metadata:
+  # Pod 名稱
+  name: k8s-mysql
+  # Pod 標籤
+  labels:
+    app: mysql
+spec:
+  containers:
+  - name: k8s-mysql-container
+    image: mysql:5.7
+    env:
+    - name: MYSQL_ROOT_PASSWORD
+      value: '!PgZyrE*q9H+aeDG'
+    ports:
+      - containerPort: 3306

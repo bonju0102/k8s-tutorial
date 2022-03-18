@@ -1,0 +1,28 @@
+# 元件版本號
+apiVersion: apps/v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Deployment
+metadata:
+  # Deployment 名稱
+  name: mysql-deploy
+spec:
+  # 指定建立多少數量的 Pod
+  replicas: 1
+  # 定義 Pod 內容
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: k8s-mysql-container
+          image: mysql:5.7
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: '!PgZyrE*q9H+aeDG'
+          ports:
+            - containerPort: 3306
+  # 指定這個 Deployment 規則要適用到哪些 Pod
+  selector:
+    matchLabels:
+      app: mysql

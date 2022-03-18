@@ -1,0 +1,51 @@
+# 元件版本號
+apiVersion: apps/v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Deployment
+metadata:
+  # Deployment 名稱
+  name: blue-nginx
+spec:
+  # 指定建立多少數量的 Pod
+  replicas: 2
+  # 定義 Pod 內容
+  template:
+    metadata:
+      labels:
+        app: blue-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: hcwxd/blue-whale
+          ports:
+            - containerPort: 3000
+  # 指定這個 Deployment 規則要適用到哪些 Pod
+  selector:
+    matchLabels:
+      app: blue-nginx
+---
+# 元件版本號
+apiVersion: apps/v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Deployment
+metadata:
+  # Deployment 名稱
+  name: purple-nginx
+spec:
+  # 指定建立多少數量的 Pod
+  replicas: 2
+  # 定義 Pod 內容
+  template:
+    metadata:
+      labels:
+        app: purple-nginx
+    spec:
+      containers:
+        - name: nginx
+          image: hcwxd/purple-whale
+          ports:
+            - containerPort: 3000
+  # 指定這個 Deployment 規則要適用到哪些 Pod
+  selector:
+    matchLabels:
+      app: purple-nginx

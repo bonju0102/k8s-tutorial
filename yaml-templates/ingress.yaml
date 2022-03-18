@@ -1,0 +1,29 @@
+# 元件版本號
+apiVersion: networking.k8s.io/v1
+# 元件屬性( Pod, Node, Service, Namespace, ReplicationController )
+kind: Ingress
+metadata:
+  # Ingress 名稱
+  name: web
+spec:
+  rules:
+    - host: blue.demo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: blue-service
+                port:
+                  number: 80
+    - host: purple.demo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: purple-service
+                port:
+                  number: 80
